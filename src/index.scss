@@ -1,0 +1,14 @@
+@import url("./scss/global.scss");
+
+
+  html,
+body {
+	color: #efeff3;
+	background: linear-gradient(to top right, #0f0104, #1f0a14), #0f0104;
+	position: relative;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
