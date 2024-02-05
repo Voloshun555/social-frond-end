@@ -1,5 +1,5 @@
 <svg width="100" height="100" xmlns="http://www.w3.org/2000/svg">
-  <circle cx="50" cy="50" r="40" fill="rgb(226, 176, 7)" />
+  <circle cx="50" cy="50" r="40" fill="#b2b26f" />
   <text x="15" y="60" font-family="Arial" font-size="30" fill="white">S</text>
   <text x="37" y="60" font-family="Arial" font-size="30" fill="white">C</text>
   <text x="62" y="60" font-family="Arial" font-size="30" fill="white">C</text>
