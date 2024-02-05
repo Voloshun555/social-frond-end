@@ -1,29 +1,21 @@
-import { Link } from "react-router-dom";
-import { CiCloudSun, CiSettings } from "react-icons/ci";
-import { FiUsers, FiPhone } from "react-icons/fi";
-import { TiMessages } from "react-icons/ti";
+import { CiCloudSun } from "react-icons/ci";
 import logo from "../../logo.svg";
-import s from "./side-bar.module.scss"
+import s from "./side-bar.module.scss";
+import { MENU } from "./sidebar.data";
+import { NavLink } from "react-router-dom";
 
 export const SideBar = () => {
   return (
     <aside className={s.sidebar}>
       <img src={logo} alt="logo" height={50} width={50} />
       <div>
-        <Link to="/">
-          <FiUsers size={27} color="yellow " />
-        </Link>
-        <Link to="/">
-          <FiPhone size={27} color="yellow " />
-        </Link>
-        <Link to="/">
-          <TiMessages size={27} color="yellow " />
-        </Link>
-        <Link to="/">
-          <CiSettings size={27} color="yellow "/>
-        </Link>
+        {MENU.map((item) => (
+          <NavLink to={item.url} key={item.url} >
+            <item.icons size={27} />
+          </NavLink>
+        ))}
       </div>
-      <CiCloudSun size={27} color="yellow "/>
+      <CiCloudSun size={27} color="yellow " />
     </aside>
   );
 };
