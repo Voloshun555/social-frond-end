@@ -4,19 +4,19 @@ import { TiMessages } from "react-icons/ti";
 
 export const MENU = [
   {
-    url: "/",
+    url: "/user",
     icons: FiUsers,
   },
   {
-    url: "/",
+    url: "/phone",
     icons: FiPhone,
   },
   {
-    url: "/",
+    url: "/message",
     icons: TiMessages,
   },
   {
-    url: "/",
+    url: "/setings",
     icons: CiSettings,
   },
 ];

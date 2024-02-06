@@ -14,3 +14,12 @@
     gap: 30px;
   }
 }
+
+.navLink {
+  color: black; /* колір за замовчуванням */
+  text-decoration: none; /* видаляємо декорацію */
+}
+
+.navLink.activeNavLink {
+  color: white; /* колір для активного NavLink */
+}
