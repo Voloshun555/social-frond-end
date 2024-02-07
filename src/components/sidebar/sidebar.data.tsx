@@ -12,7 +12,7 @@ export const MENU = [
     icons: FiPhone,
   },
   {
-    url: "/message",
+    url: "/",
     icons: TiMessages,
   },
   {
