@@ -3,7 +3,7 @@ import s from "./login.module.scss";
 interface InputProps {
   type: string;
   label: string;
-  icon?: string;
+  icon?: any;
 }
 
 export const Input: React.FC<InputProps> = ({ type, label, icon }) => {

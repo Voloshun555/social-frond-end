@@ -1,20 +1,27 @@
 import React, { FormEvent } from "react";
 import { NavLink } from "react-router-dom";
-import { Input } from "./custom-input"; // Припускаю, що це компонент з використанням TypeScript
+import {
+  MdOutlineEmail,
+  MdOutlineDriveFileRenameOutline,
+} from "react-icons/md";
+import { RiLockPasswordLine } from "react-icons/ri";
+import { Input } from "./custom-input"; 
 import s from "./login.module.scss";
 
 interface AuthFormProps {
   title: string;
   buttonText: string;
+  NavText: string;
   linkText: string;
   linkPath: string;
   includeNameField?: boolean;
   onSubmit: () => void;
 }
 
-const AuthForm: React.FC<AuthFormProps> = ({
+export const AuthForm: React.FC<AuthFormProps> = ({
   title,
   buttonText,
+  NavText,
   linkText,
   linkPath,
   includeNameField = false,
@@ -30,13 +37,23 @@ const AuthForm: React.FC<AuthFormProps> = ({
       <div className={s.loginBox}>
         <form onSubmit={handleSubmit}>
           <h2>{title}</h2>
-          <Input type="email" label="Email" />
-          <Input type="password" label="Password" />
-          {includeNameField && <Input type="text" label="Name" />}
+          {includeNameField && (
+            <Input
+              type="text"
+              label="Name"
+              icon={<MdOutlineDriveFileRenameOutline />}
+            />
+          )}
+          <Input type="email" label="Email" icon={<MdOutlineEmail />} />
+          <Input
+            type="password"
+            label="Password"
+            icon={<RiLockPasswordLine />}
+          />
           <button type="submit">{buttonText}</button>
           <div className={s.registerLink}>
             <p>
-              {linkText} <NavLink to={linkPath}>{linkText}</NavLink>
+              {linkText} <NavLink to={linkPath}>{NavText}</NavLink>
             </p>
           </div>
         </form>
@@ -44,5 +61,3 @@ const AuthForm: React.FC<AuthFormProps> = ({
     </section>
   );
 };
-
-export default AuthForm;
