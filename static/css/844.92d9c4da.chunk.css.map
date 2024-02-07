@@ -1,0 +1,1 @@
+{"version":3,"file":"static/css/844.92d9c4da.chunk.css","mappings":"AAAA,uBACI,aACA","sources":["page/chatsPage.module.scss"],"sourcesContent":[".wrap{\n    display: grid;\n    grid-template-rows: 1fr 5fr;\n}"],"names":[],"sourceRoot":""}
