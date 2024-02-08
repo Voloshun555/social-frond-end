@@ -1,16 +1,30 @@
-import s from "./login.module.scss";
+import React from "react";
+import s from "./forma.module.scss";
 
 interface InputProps {
   type: string;
   label: string;
-  icon?: any;
+  icon?: React.ReactNode;
+  value: string; 
+  onChange: (value: string) => void; 
 }
 
-export const Input: React.FC<InputProps> = ({ type, label, icon }) => {
+export const Input: React.FC<InputProps> = ({
+  type,
+  label,
+  icon,
+  value,
+  onChange,
+}) => {
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const newValue = event.target.value;
+    onChange(newValue);
+  };
+
   return (
     <div className={s.inputBox}>
       <span className={s.icon}>{icon}</span>
-      <input type={type} required />
+      <input type={type} value={value} onChange={handleChange} required />
       <label>{label}</label>
     </div>
   );

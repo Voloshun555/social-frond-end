@@ -1,12 +1,12 @@
-import React, { FormEvent } from "react";
+import React, { FormEvent, useState } from "react";
 import { NavLink } from "react-router-dom";
 import {
   MdOutlineEmail,
   MdOutlineDriveFileRenameOutline,
 } from "react-icons/md";
 import { RiLockPasswordLine } from "react-icons/ri";
-import { Input } from "./custom-input"; 
-import s from "./login.module.scss";
+import { Input } from "./custom-input";
+import s from "./forma.module.scss";
 
 interface AuthFormProps {
   title: string;
@@ -15,7 +15,7 @@ interface AuthFormProps {
   linkText: string;
   linkPath: string;
   includeNameField?: boolean;
-  onSubmit: () => void;
+  onSubmit: (data: { email: string; password: string; name?: string }) => void;
 }
 
 export const AuthForm: React.FC<AuthFormProps> = ({
@@ -27,9 +27,23 @@ export const AuthForm: React.FC<AuthFormProps> = ({
   includeNameField = false,
   onSubmit,
 }) => {
+  const initialFormData = {
+    email: "",
+    password: "",
+    name: includeNameField ? "" : undefined,
+  };
+
+  const [formData, setFormData] = useState(initialFormData);
+
+  const handleInputChange = (name: string, value: string) => {
+  
+    setFormData({ ...formData, [name]: value });
+  };
+
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
-    onSubmit();
+    onSubmit(formData);
+    setFormData(initialFormData); // Очищуємо стан форми після відправки
   };
 
   return (
@@ -42,13 +56,23 @@ export const AuthForm: React.FC<AuthFormProps> = ({
               type="text"
               label="Name"
               icon={<MdOutlineDriveFileRenameOutline />}
+              value={formData.name || ""}
+              onChange={(value) => handleInputChange("name", value)}
             />
           )}
-          <Input type="email" label="Email" icon={<MdOutlineEmail />} />
+          <Input
+            type="email"
+            label="Email"
+            icon={<MdOutlineEmail />}
+            value={formData.email}
+            onChange={(value) => handleInputChange("email", value)}
+          />
           <Input
             type="password"
             label="Password"
             icon={<RiLockPasswordLine />}
+            value={formData.password}
+            onChange={(value) => handleInputChange("password", value)}
           />
           <button type="submit">{buttonText}</button>
           <div className={s.registerLink}>
@@ -61,3 +85,5 @@ export const AuthForm: React.FC<AuthFormProps> = ({
     </section>
   );
 };
+
+ 

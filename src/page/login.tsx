@@ -1,9 +1,12 @@
 import React from "react";
 import { AuthForm } from "../components/forma/forma";
+import { logIn } from "../redux/auth/authOperation";
+import { useAppDispatch, useAppSelector } from "../hooks/hook-redux";
 
 const Login = () => {
-  const handleLogin = () => {
-    // Додаткова логіка для входу
+  const dispatch = useAppDispatch();
+  const handleLogin = (formData: { email: string; password: string }) => {
+    dispatch(logIn(formData)); 
   };
 
   return (
