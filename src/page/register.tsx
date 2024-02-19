@@ -1,10 +1,13 @@
 
 import { AuthForm } from "../components/forma/forma";
+import { useAppDispatch } from "../hooks/hook-redux";
+import { register } from "../redux/auth/authOperation";
 
 
 const Registration = () => {
-  const handleRegister = () => {
-    // Логіка реєстрації
+  const dispatch = useAppDispatch();
+  const handleRegister = (formData: { email: string; password: string }) => {
+    dispatch(register(formData));
   };
 
   return (

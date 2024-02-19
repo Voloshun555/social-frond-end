@@ -1,30 +1,23 @@
-import { configureStore } from "@reduxjs/toolkit";
-import {
-    persistStore,
-    persistReducer,
-    FLUSH,
-    REHYDRATE,
-    PAUSE,
-    PERSIST,
-    PURGE,
-    REGISTER,
-} from "redux-persist";
+import { configureStore, combineReducers } from "@reduxjs/toolkit";
+import { persistStore, persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
+import { FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER } from "redux-persist/es/constants";
 import authSlice from "./auth/authSlice";
+import chatSlice from "./chat/chatSlice";
 
 const persistConfig = {
     key: "auth",
     storage,
     whitelist: ["accessToken"],
-
 };
 
-
+const rootReducer = combineReducers({
+    chat: chatSlice,
+    auth: persistReducer(persistConfig, authSlice) 
+});
 
 export const store = configureStore({
-    reducer: {
-        auth: persistReducer(persistConfig, authSlice)
-    },
+    reducer: rootReducer,
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware({
             serializableCheck: {

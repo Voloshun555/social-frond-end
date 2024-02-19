@@ -12,11 +12,11 @@ export const MENU = [
     icons: FiPhone,
   },
   {
-    url: "/",
+    url: "/messages",
     icons: TiMessages,
   },
   {
-    url: "/setings",
+    url: "/settings",
     icons: CiSettings,
   },
 ];

@@ -1,18 +1,29 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { logIn } from './authOperation';
+import { currentUser, logIn, logOut, refreshTokens, register, updateUser } from './authOperation';
 
 
 interface AuthState {
     accessToken: string;
-    email: string
-    name: string
+    isLoggedIn: boolean;
+    isRefreshing: boolean;
+    user: {
+        name: string;
+        email: string;
+        avatar: string;
+        chat?: []
+    };
 }
 
-// Define the initial state using that type
 const initialState: AuthState = {
     accessToken: '',
-    email: '',
-    name: '',
+    isLoggedIn: false,
+    isRefreshing: false,
+    user: {
+        name: '',
+        email: '',
+        avatar: '',
+        chat: []
+    },
 };
 
 export const authSlice = createSlice({
@@ -20,13 +31,54 @@ export const authSlice = createSlice({
     initialState,
     reducers: {},
     extraReducers: (builder) => {
-        builder.addCase(logIn.fulfilled, (state, action) => {
-            state.accessToken = action.payload.accessToken;
-            state.email = action.payload.email;
-            state.name = action.payload.name;
-        });
+        builder
+            .addCase(logIn.fulfilled, (state, action) => {
+                state.accessToken = action.payload.accessToken;
+                state.user = action.payload.data;
+                state.isLoggedIn = true;
+                state.isRefreshing = false;
+            })
+            .addCase(logIn.rejected, (state) => {
+                state.isRefreshing = false;
+            })
+            .addCase(logIn.pending, (state) => {
+                state.isRefreshing = true;
+            })
+            .addCase(register.fulfilled, (state, action) => {
+                state.accessToken = action.payload.accessToken;
+                state.user = action.payload.data;
+                state.isLoggedIn = true;
+                state.isRefreshing = false;
+            })
+            .addCase(register.pending, (state) => {
+                state.isRefreshing = true;
+            })
+            .addCase(currentUser.fulfilled, (state, action) => {
+                state.user = action.payload.user;
+                state.isLoggedIn = true;
+                state.isRefreshing = false;
+            })
+            .addCase(logOut.fulfilled, (state) => {
+                state.user = { name: '', email: '' , avatar: ''};
+                state.accessToken = '';
+                state.isLoggedIn = false;
+                state.isRefreshing = false;
+            })
+            .addCase(updateUser.fulfilled, (state, action) => {
+                state.user = action.payload;
+            })
+            .addCase(refreshTokens.fulfilled, (state, action) => {
+                state.accessToken = action.payload.accessToken;
+                state.isRefreshing = false;
+            })
+            .addCase(refreshTokens.rejected, (state) => {
+                state.isRefreshing = false;
+                state.isLoggedIn = false;
+            })
+            .addCase(refreshTokens.pending, (state) => {
+                state.isRefreshing = true;
+            });
     },
 });
 
 export default authSlice.reducer;
-

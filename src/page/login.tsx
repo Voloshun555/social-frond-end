@@ -1,7 +1,6 @@
-import React from "react";
 import { AuthForm } from "../components/forma/forma";
 import { logIn } from "../redux/auth/authOperation";
-import { useAppDispatch, useAppSelector } from "../hooks/hook-redux";
+import { useAppDispatch } from "../hooks/hook-redux";
 
 const Login = () => {
   const dispatch = useAppDispatch();
