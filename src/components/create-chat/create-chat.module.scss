@@ -1,0 +1,22 @@
+.containerChats {
+  padding: 10px;
+  .searchChats {
+    position: relative;
+  }
+  input {
+    border-radius: 15px;
+    background-color: transparent;
+    height: 50px;
+    width: 100%;
+    padding: 10px;
+  }
+  button {
+    position: absolute;
+    right: 10px;
+    top: 25%;
+    border: 1px;
+    border-radius: 15px;
+    padding: 3px;
+    background-color: aliceblue;
+  }
+}

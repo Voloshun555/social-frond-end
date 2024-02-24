@@ -1,13 +1,13 @@
 import { createChat } from "../../redux/chat/chatOperation";
-import { useAppDispatch, useAppSelector } from "../../hooks/hook-redux";
-import s from "./chatsList.module.scss";
+import { useAppDispatch } from "../../hooks/hook-redux";
+import s from "./create-chat.module.scss";
 import { useState } from "react";
 
-export const ChatsList = () => {
+export const CreateChat = () => {
   const dispatch = useAppDispatch();
   const [value, setValue] = useState("");
-  const data = useAppSelector(state => state.auth.user)
-  console.log(data)
+  
+  
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -22,14 +22,15 @@ export const ChatsList = () => {
   return (
     <div className={s.containerChats}>
       <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          placeholder="Name chat"
-          className={s.searchChats}
-          value={value}
-          onChange={handleChange}
-        />
-        <button type="submit">Create chat</button>
+        <div className={s.searchChats}>
+          <input
+            type="text"
+            placeholder="Name chat"
+            value={value}
+            onChange={handleChange}
+          />
+          <button type="submit">Create chat</button>
+        </div>
       </form>
     </div>
   );

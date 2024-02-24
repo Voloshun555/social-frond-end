@@ -1,0 +1,30 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  width: 550px;
+  border-right: 2px solid rgba(255, 255, 255, 0.12);
+  .currentChat {
+    border-bottom: 2px solid rgba(255, 255, 255, 0.12);
+    padding: 8px;
+  }
+
+  .wrapForm {
+    margin-top: auto;
+    padding: 10px;
+    .wrapper {
+      position: relative;
+    }
+    input {
+      width: 100%;
+      height: 30px;
+      border-radius: 25px;
+      padding: 5px;
+    }
+
+    button {
+      position: absolute;
+      right: 10px;
+      top: 7px;
+    }
+  }
+}

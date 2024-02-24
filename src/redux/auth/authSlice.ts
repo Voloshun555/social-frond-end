@@ -1,16 +1,16 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { currentUser, logIn, logOut, refreshTokens, register, updateUser } from './authOperation';
 
-
 interface AuthState {
     accessToken: string;
     isLoggedIn: boolean;
     isRefreshing: boolean;
     user: {
+        [x: string]: any;
         name: string;
         email: string;
         avatar: string;
-        chat?: []
+       
     };
 }
 
@@ -22,7 +22,6 @@ const initialState: AuthState = {
         name: '',
         email: '',
         avatar: '',
-        chat: []
     },
 };
 
@@ -59,7 +58,7 @@ export const authSlice = createSlice({
                 state.isRefreshing = false;
             })
             .addCase(logOut.fulfilled, (state) => {
-                state.user = { name: '', email: '' , avatar: ''};
+                state.user = { name: '', email: '', avatar: '' };
                 state.accessToken = '';
                 state.isLoggedIn = false;
                 state.isRefreshing = false;
@@ -77,7 +76,8 @@ export const authSlice = createSlice({
             })
             .addCase(refreshTokens.pending, (state) => {
                 state.isRefreshing = true;
-            });
+            })
+            
     },
 });
 
