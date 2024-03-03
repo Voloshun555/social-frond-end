@@ -1,15 +1,27 @@
-import { createAsyncThunk } from '@reduxjs/toolkit';
+import { createAsyncThunk } from "@reduxjs/toolkit";
+import axios from "axios";
 
-const createWebSocket = () => {
-    const socket = new WebSocket('ws://example.com/socket');
-    return socket;
-};
+export const sendMessage = createAsyncThunk(
+    'messages/sendMessage',
+    async ({ chatroomId, content, userId }: { chatroomId: string, content: string, userId: string }, thunkAPI) => {
+        try {
+            const response = await axios.post(`chatrooms/${chatroomId}/messages`, { content, userId });
+            console.log(response.data)
+            return response.data;
+        } catch (error) {
+            return thunkAPI.rejectWithValue({ message: 'An error occurred while sending message' });
+        }
+    }
+);
 
-const socket = createWebSocket();
-const sendMessageToWebSocket = async (message: string) => {
-    return new Promise((resolve, reject) => {
-        socket.send(JSON.stringify(message));
-        resolve(message);
-    });
-};
-
+export const fetchMessagesForChatroom = createAsyncThunk(
+    'messages/fetchMessagesForChatroom',
+    async (chatroomId: string, thunkAPI) => {
+        try {
+            const response = await axios.get(`/chatrooms/${chatroomId}/messages`);
+            return response.data;
+        } catch (error) {
+            return thunkAPI.rejectWithValue({ message: 'An error occurred while fetching messages for chatroom' });
+        }
+    }
+);

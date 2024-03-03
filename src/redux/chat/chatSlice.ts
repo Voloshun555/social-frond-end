@@ -2,6 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import { createChat, deleteChatroomAsync, getChatroomsForUserAsync } from './chatOperation';
 
 interface Chat {
+    ownerId: any;
     id: string;
     name: string;
 }

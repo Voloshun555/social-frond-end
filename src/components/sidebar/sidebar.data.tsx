@@ -4,7 +4,7 @@ import { TiMessages } from "react-icons/ti";
 
 export const MENU = [
   {
-    url: "/user",
+    url: "/users",
     icons: FiUsers,
   },
   {

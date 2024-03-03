@@ -5,6 +5,8 @@ import { FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER } from "redux-persist
 import authSlice from "./auth/authSlice";
 import chatSlice from "./chat/chatSlice";
 import messageSlice from "./message/messageSlice";
+import userSlice from "./user/userSlice";
+
 
 const persistConfig = {
     key: "auth",
@@ -15,7 +17,9 @@ const persistConfig = {
 const rootReducer = combineReducers({
     chat: chatSlice,
     auth: persistReducer(persistConfig, authSlice),
-    message: messageSlice
+    message: messageSlice,
+    user: userSlice
+   
 });
 
 export const store = configureStore({

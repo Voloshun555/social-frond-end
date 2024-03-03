@@ -10,7 +10,6 @@ export const createChat = createAsyncThunk(
     async (credentials: ChatCredentials, thunkAPI) => {
         try {
             const response = await axios.post('chatrooms/create', credentials);
-            console.log("response", response.data)
             return response.data;
         } catch (error) {
             return thunkAPI.rejectWithValue({ message: 'An error occurred during login' });

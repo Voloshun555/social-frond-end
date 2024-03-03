@@ -1,30 +1,67 @@
 .container {
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
   width: 550px;
+  height: 100vh;
   border-right: 2px solid rgba(255, 255, 255, 0.12);
   .currentChat {
     border-bottom: 2px solid rgba(255, 255, 255, 0.12);
     padding: 8px;
   }
-
   .wrapForm {
-    margin-top: auto;
     padding: 10px;
+    
     .wrapper {
       position: relative;
     }
-    input {
+    
+    .inputField {
       width: 100%;
-      height: 30px;
       border-radius: 25px;
-      padding: 5px;
+      padding: 15px;
+      resize: vertical;
+      overflow-y: auto;
+      min-height: 30px;
+      height: auto !important;
     }
-
     button {
       position: absolute;
-      right: 10px;
-      top: 7px;
+      right: 15px;
+      top: 15px;
     }
   }
+}
+.scroll {
+  overflow-y: auto;
+  overflow-x: hidden;
+  height: calc(100% - 20px);
+  padding: 16px;
+  }
+  .scroll::-webkit-scrollbar {
+    display: none;
+  }
+.sender {
+  display: flex;
+  margin: 5px;
+  margin-bottom: 10px;
+  .avatar {
+    border-radius: 25px;
+  }
+  .senderContent {
+    background-color: rgb(184, 182, 179);
+    padding: 15px;
+    border-radius: 0px 50px 0px 50px / 0px 25px 0px 25px;
+    min-width: 100px;
+    max-width: 400px;
+    min-height: 75px;
+    word-wrap: break-word;
+  }
+}
+.senderMe {
+  justify-content: flex-end;
+}
+
+.senderOther {
+  justify-content: flex-start; 
 }
