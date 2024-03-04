@@ -14,7 +14,7 @@ export const CurrentUser = () => {
   };
 
   const { name, email, avatar } = useAppSelector((user) => user.auth.user);
- const {isOnline} = useWebSocket(user.id)
+//  const {isOnline} = useWebSocket(user.id)
   
 
   return (
@@ -30,7 +30,7 @@ export const CurrentUser = () => {
           <CiLogout size={40} />
         </button>
       </div>
-      <p>{isOnline ? "Онлайн" : "Офлайн"}</p>
+      {/* <p>{isOnline ? "Онлайн" : "Офлайн"}</p> */}
       {/* Відображення статусу користувача */}
     </div>
   );

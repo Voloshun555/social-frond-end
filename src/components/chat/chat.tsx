@@ -9,19 +9,44 @@ import {
   fetchMessagesForChatroom,
 } from "../../redux/message/messageOperation";
 
+
+
 import s from "./chat.module.scss";
 import { useAuth } from "../../hooks/useAuth";
 import useWebSocket from "../../hooks/useConnectSocket";
+import { io } from "socket.io-client";
+
+
+interface Message {
+  id: string;
+  sender: {
+    id: string;
+    name: string;
+    avatar: string;
+  };
+  content: string;
+}
+
 
 const Chat = () => {
   const ownerId = useAppSelector((stat) => stat.chat.chats[0]?.ownerId);
   const { user } = useAuth()
-  const {socket} = useWebSocket(user.id)
   const message = useAppSelector((state) => state.message);
+  const [getMessage, setGetMessage] = useState<Message[]>([]);
   const { id } = useParams();
   const [inputValue, setInputValue] = useState("");
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+
+  const socket = io("http://localhost:3006");
+  
+   socket.on("connect", () => {
+     console.log("Connected to server");
+   });
+
+   socket.on("disconnect", () => {
+     console.log("Disconnected from server");
+   });
 
   const chatContainerRef = useRef<HTMLDivElement>(null);
 
@@ -56,17 +81,27 @@ const Chat = () => {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    if (!inputValue || !id) {
-      return;
+    if (inputValue.trim() && user.name) {
+      socket.emit("message", {
+        content: inputValue,
+        chatId: id,
+        senderId: user.id,
+      });
     }
 
-    dispatch(
-      sendMessage({ chatroomId: id, content: inputValue, userId: ownerId })
-    );
+    // dispatch(
+    //   sendMessage({ chatroomId: id, content: inputValue, userId: ownerId })
+    // );
 
     setInputValue("");
     scrollToBottom();
   };
+
+  useEffect(() => {
+    socket.on("receive_message", (data) => setGetMessage([...getMessage, data]));
+  }, [getMessage, socket])
+
+console.log("getMessage: ", getMessage);
 
   return (
     <div className={s.container}>
@@ -75,7 +110,7 @@ const Chat = () => {
         <button onClick={handleDeleteChatroom}>Delete</button>
       </div>
       <div ref={chatContainerRef} className={s.scroll}>
-        {message.data.map((msg, index) => (
+        {getMessage.map((msg, index) => (
           <div
             className={`${s.sender} ${
               msg.sender.id === user.id ? s.senderMe : s.senderOther
