@@ -1,12 +1,12 @@
 
-import { useAuth } from '../../hooks/useAuth';
-import useWebSocket from '../../hooks/useConnectSocket';
-import { CustomNavLink } from './custum-nav-link'
-import { MENU } from './sidebar.data'
+import { CustomNavLink } from "./custum-nav-link";
+import { MENU } from "./sidebar.data";
 
 export const SideLink = () => {
-  const { user } = useAuth();
-  useWebSocket(user.id);
+  
+
+ 
+
   return (
     <div>
       {MENU.map((item, index) => (
@@ -16,4 +16,4 @@ export const SideLink = () => {
       ))}
     </div>
   );
-}
+};

@@ -1,29 +1,21 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { useAppDispatch, useAppSelector } from "../../hooks/hook-redux";
 import { CiLogout } from "react-icons/ci";
 import { logOut } from "../../redux/auth/authOperation";
 import s from "./currentUser.module.scss";
-import io from "socket.io-client";
+import useWebSocket from "../../hooks/useConnectSocket";
+import { useAuth } from "../../hooks/useAuth";
 
 export const CurrentUser = () => {
+  const {user} = useAuth()
   const dispatch = useAppDispatch();
   const logout = () => {
     dispatch(logOut());
   };
 
-  const { name, email, avatar, id } = useAppSelector((user) => user.auth.user);
-  const [isOnline, setIsOnline] = React.useState(false); 
-  useEffect(() => {
-    const socket = io("http://localhost:3006", {
-      query: { userId: id },
-    });
-
-    socket.on("onlineStatus", (status) => {
-      console.log("Received online status from server:", status);
-      setIsOnline(status);
-    });
-
-  }, [id]);
+  const { name, email, avatar } = useAppSelector((user) => user.auth.user);
+ const {isOnline} = useWebSocket(user.id)
+  
 
   return (
     <div className={s.currentUser}>

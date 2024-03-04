@@ -10,9 +10,13 @@ import {
 } from "../../redux/message/messageOperation";
 
 import s from "./chat.module.scss";
+import { useAuth } from "../../hooks/useAuth";
+import useWebSocket from "../../hooks/useConnectSocket";
 
 const Chat = () => {
   const ownerId = useAppSelector((stat) => stat.chat.chats[0]?.ownerId);
+  const { user } = useAuth()
+  const {socket} = useWebSocket(user.id)
   const message = useAppSelector((state) => state.message);
   const { id } = useParams();
   const [inputValue, setInputValue] = useState("");
@@ -20,7 +24,7 @@ const Chat = () => {
   const navigate = useNavigate();
 
   const chatContainerRef = useRef<HTMLDivElement>(null);
-console.log(chatContainerRef);
+
   useEffect(() => {
     if (id) {
       dispatch(fetchMessagesForChatroom(id));
@@ -74,12 +78,12 @@ console.log(chatContainerRef);
         {message.data.map((msg, index) => (
           <div
             className={`${s.sender} ${
-              msg.sender.id === ownerId ? s.senderMe : s.senderOther
+              msg.sender.id === user.id ? s.senderMe : s.senderOther
             }`}
             key={index}
           >
             <div className={s.avatar}>
-              {msg.sender.id !== ownerId && (
+              {msg.sender.id !== user.id && (
                 <img
                   src={msg.sender.avatar}
                   alt="avatar"
