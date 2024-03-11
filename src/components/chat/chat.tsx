@@ -1,52 +1,26 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useParams } from "react-router-dom";
+import { io } from "socket.io-client";
+import { LuSend } from "react-icons/lu";
+
 import { useAppDispatch, useAppSelector } from "../../hooks/hook-redux";
 import { deleteChatroomAsync } from "../../redux/chat/chatOperation";
 import { useNavigate } from "react-router-dom";
-import { LuSend } from "react-icons/lu";
-import {
-  sendMessage,
-  fetchMessagesForChatroom,
-} from "../../redux/message/messageOperation";
-
-
+import { fetchMessagesForChatroom } from "../../redux/message/messageOperation";
+import { useAuth } from "../../hooks/useAuth";
+import { receiveMessage } from "../../redux/message/messageSlice";
 
 import s from "./chat.module.scss";
-import { useAuth } from "../../hooks/useAuth";
-import useWebSocket from "../../hooks/useConnectSocket";
-import { io } from "socket.io-client";
-
-
-interface Message {
-  id: string;
-  sender: {
-    id: string;
-    name: string;
-    avatar: string;
-  };
-  content: string;
-}
-
 
 const Chat = () => {
-  const ownerId = useAppSelector((stat) => stat.chat.chats[0]?.ownerId);
-  const { user } = useAuth()
-  const message = useAppSelector((state) => state.message);
-  const [getMessage, setGetMessage] = useState<Message[]>([]);
-  const { id } = useParams();
+  const [socket, setSocket] = useState<any>(null);
+  const message = useAppSelector((state) => state.message.data);
   const [inputValue, setInputValue] = useState("");
+  const { user } = useAuth();
+  const { id } = useParams();
+
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-
-  const socket = io("http://localhost:3006");
-  
-   socket.on("connect", () => {
-     console.log("Connected to server");
-   });
-
-   socket.on("disconnect", () => {
-     console.log("Disconnected from server");
-   });
 
   const chatContainerRef = useRef<HTMLDivElement>(null);
 
@@ -63,7 +37,26 @@ const Chat = () => {
     }
   };
 
-  useEffect(scrollToBottom, [message.data]); 
+  useEffect(() => {
+    const socket = io("http://localhost:3006");
+    setSocket(socket);
+    socket.on("connect", () => {
+      console.log("Connected to server");
+    });
+    socket.on("receive_message", (dataSicket) => {
+      dispatch(receiveMessage(dataSicket));
+    });
+
+    socket.on("disconnect", () => {
+      console.log("Disconnected from server");
+    });
+
+    return () => {
+      socket.disconnect();
+    };
+  }, [dispatch]);
+
+  useEffect(scrollToBottom, [message]);
 
   const handleDeleteChatroom = () => {
     if (id !== undefined) {
@@ -88,21 +81,9 @@ const Chat = () => {
         senderId: user.id,
       });
     }
-
-    // dispatch(
-    //   sendMessage({ chatroomId: id, content: inputValue, userId: ownerId })
-    // );
-
     setInputValue("");
     scrollToBottom();
   };
-
-  useEffect(() => {
-    socket.on("receive_message", (data) => setGetMessage([...getMessage, data]));
-  }, [getMessage, socket])
-
-console.log("getMessage: ", getMessage);
-
   return (
     <div className={s.container}>
       <div className={s.currentChat}>
@@ -110,15 +91,17 @@ console.log("getMessage: ", getMessage);
         <button onClick={handleDeleteChatroom}>Delete</button>
       </div>
       <div ref={chatContainerRef} className={s.scroll}>
-        {getMessage.map((msg, index) => (
+        {message.map((msg, index) => (
           <div
             className={`${s.sender} ${
-              msg.sender.id === user.id ? s.senderMe : s.senderOther
+              msg.sender && msg.sender.id === user.id
+                ? s.senderMe
+                : s.senderOther
             }`}
             key={index}
           >
             <div className={s.avatar}>
-              {msg.sender.id !== user.id && (
+              {msg.sender && msg.sender.id !== user.id && (
                 <img
                   src={msg.sender.avatar}
                   alt="avatar"
@@ -128,7 +111,7 @@ console.log("getMessage: ", getMessage);
               )}
             </div>
             <div className={s.senderContent}>
-              <p>{msg.sender.name}</p>
+              <p>{msg.sender && msg.sender.name}</p>
               <p>{msg.content}</p>
             </div>
           </div>

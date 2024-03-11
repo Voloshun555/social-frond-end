@@ -30,10 +30,13 @@ const initialState: MessageState = {
 export const messageSlice = createSlice({
     name: 'message',
     initialState,
-    reducers: {},
+    reducers: {
+        receiveMessage: (state, action) => {
+            state.data.push(action.payload);
+        },
+    },
     extraReducers: (builder) => {
         builder
-            // Обробка надсилання повідомлення
             .addCase(sendMessage.pending, (state) => {
                 state.loading = true;
                 state.error = null;
@@ -44,22 +47,23 @@ export const messageSlice = createSlice({
             })
             .addCase(sendMessage.rejected, (state, action) => {
                 state.loading = false;
-                // Можливо, ви захочете обробити помилку
+
             })
-            // Обробка отримання повідомлень для чат-кімнати
             .addCase(fetchMessagesForChatroom.pending, (state) => {
                 state.loading = true;
                 state.error = null;
             })
             .addCase(fetchMessagesForChatroom.fulfilled, (state, action) => {
                 state.loading = false;
-                state.data = action.payload; // Оновлюємо дані повідомлень
+                state.data = action.payload;
             })
             .addCase(fetchMessagesForChatroom.rejected, (state, action) => {
                 state.loading = false;
-                // Можливо, ви захочете обробити помилку
-            })
+
+            });
     },
 });
+
+export const { receiveMessage } = messageSlice.actions;
 
 export default messageSlice.reducer;

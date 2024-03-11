@@ -6,7 +6,6 @@ export const sendMessage = createAsyncThunk(
     async ({ chatroomId, content, userId }: { chatroomId: string, content: string, userId: string }, thunkAPI) => {
         try {
             const response = await axios.post(`chatrooms/${chatroomId}/messages`, { content, userId });
-            console.log(response.data)
             return response.data;
         } catch (error) {
             return thunkAPI.rejectWithValue({ message: 'An error occurred while sending message' });
