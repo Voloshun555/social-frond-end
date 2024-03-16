@@ -10,7 +10,7 @@ interface AuthState {
         name: string;
         email: string;
         avatar: string;
-       
+
     };
 }
 
@@ -28,7 +28,8 @@ const initialState: AuthState = {
 export const authSlice = createSlice({
     name: 'auth',
     initialState,
-    reducers: {},
+    reducers: {
+    },
     extraReducers: (builder) => {
         builder
             .addCase(logIn.fulfilled, (state, action) => {
@@ -77,8 +78,9 @@ export const authSlice = createSlice({
             .addCase(refreshTokens.pending, (state) => {
                 state.isRefreshing = true;
             })
-            
+
     },
 });
+
 
 export default authSlice.reducer;

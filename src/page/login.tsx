@@ -7,7 +7,6 @@ const Login = () => {
   const handleLogin = (formData: { email: string; password: string }) => {
     dispatch(logIn(formData)); 
   };
-
   return (
     <AuthForm
       title="Login"

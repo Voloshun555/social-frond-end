@@ -2,6 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import { getAllUsers } from './userOperation';
 
 interface User {
+    isOnline: boolean;
     id: string;
     name: string;
     email: string;

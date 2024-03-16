@@ -2,6 +2,8 @@ import axios from 'axios';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
 
+
+
 export const getAllUsers = createAsyncThunk('users/all/users', async (_, thunkAPI) => {
     try {
         const response = await axios.get('users/all/users');

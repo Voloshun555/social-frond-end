@@ -1,14 +1,12 @@
-import React, { useState } from "react";
 import { useAppSelector } from "../hooks/hook-redux";
+import { useAuth } from "../hooks/useAuth";
+import { useWebSocket } from "../hooks/useConnectSocket";
 
 const Users = () => {
-    const users = useAppSelector((user) => user.user);
-    const { id } = useAppSelector(
-      (user) => user.auth.user
-    );
-  const [onlineUsers, setOnlineUsers] = useState([]);
-
- 
+  const users = useAppSelector((user) => user.user);
+  const { user } = useAuth()
+  const {usersStatus} = useWebSocket(user.id)
+  
 
   return (
     <div style={{ margin: "50px" }}>
@@ -16,7 +14,11 @@ const Users = () => {
         <div key={index} style={{ margin: "50px" }}>
           <h1>{user.name}</h1>
           <h2>{user.email}</h2>
-          <p>{onlineUsers ? "Online" : "Offline"}</p>
+          {usersStatus.find((status: { userId: string; }) => status.userId === user.id) ? (
+            <p>online</p>
+          ) : (
+            <p>offline</p>
+          )}
         </div>
       ))}
     </div>
