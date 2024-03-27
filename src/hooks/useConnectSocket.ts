@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import io from "socket.io-client";
 
 export const useWebSocket = (userId: string) => {
-    const [isOnline, setIsOnline] = useState(false);
     const [socket, setSocket] = useState<any>(null);
     const [usersStatus, setUsersStatus] = useState<any>([])
 
@@ -27,18 +26,12 @@ export const useWebSocket = (userId: string) => {
             newSocket.off('usersStatus', userChatIsOnlineHandler);
         });
 
-        newSocket.on("onlineStatus", (status: boolean) => {
-            console.log(status)
-            setIsOnline(status);
-        });
-
-
         return () => {
             newSocket.disconnect();
         };
     }, [userId]);
 
-    return { isOnline, socket, usersStatus };
+    return { socket, usersStatus };
 };
 
 
