@@ -40,3 +40,15 @@ export const getChatroomsForUserAsync = createAsyncThunk(
         }
     }
 );
+
+export const addUsersToChatroom = createAsyncThunk(
+    'chatroom/addUsersToChatroom',
+    async ({ chatroomId, email }: { chatroomId: string, email: string }, { rejectWithValue }) => {
+        try {
+            const response = await axios.post(`chatrooms/${chatroomId}/users`, { userEmail: email });
+            return response.data;
+        } catch (error: any) {
+            return rejectWithValue(error.message);
+        }
+    }
+);
