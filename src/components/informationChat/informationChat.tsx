@@ -12,7 +12,6 @@ export const InformationChat = () => {
   const dispatch = useAppDispatch();
 
   const addUserForChat = (userEmail: string) => {
-    // Check if id is defined before dispatching the action
     if (id) {
       dispatch(addUsersToChatroom({ chatroomId: id, email: userEmail }));
     } else {

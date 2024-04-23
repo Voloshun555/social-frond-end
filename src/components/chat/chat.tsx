@@ -73,9 +73,6 @@ const Chat = () => {
     setInputValue("");
     scrollToBottom();
   };
-
-  
-
   return (
     <div style={{ display: "flex" }}>
       <div className={s.container}>
